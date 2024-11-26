@@ -4,14 +4,32 @@ services:
     container_name: grafana
     image: grafana/grafana
     restart: unless-stopped
+    environment:
+      - GF_SMTP_ENABLED=${GF_SMTP_ENABLED}
+      - GF_SMTP_HOST=${GF_SMTP_HOST}
+      - GF_SMTP_USER=${GF_SMTP_USER}
+      - GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD}
+      - GF_SMTP_SKIP_VERIFY=${GF_SMTP_SKIP_VERIFY}
+      - GF_SMTP_FROM_NAME=${GF_SMTP_FROM_NAME}
+      - GF_SMTP_FROM_ADDRESS=${GF_SMTP_FROM_ADDRESS}
     volumes:
      - ./grafana/data:/var/lib/grafana
-     - ./grafana/defaults.ini:/usr/share/grafana/conf/defaults.ini
+    # - ./grafana/defaults.ini:/usr/share/grafana/conf/defaults.ini
     ports:
       - "3000:3000"
     networks:
      - universal
-  
+
+  loki:
+    container_name: loki
+    image: grafana/loki
+    ports: 
+     - "3100:3100"
+    volumes:
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+    networks:
+      - universal
+
   prometheus:
     container_name: prometheus
     image: bitnami/prometheus
@@ -21,29 +39,14 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
-      - ./prometheus/alerts.yml:/etc/prometheus/alerts.yml
     ports:
       - "9090:9090"
     networks:
       - universal
-
-
-  # alert-manager:
-  #   container_name: alert-manager
-  #   image: bitnami/alertmanager
-  #   restart: unless-stopped
-  #   ports:
-  #     - "9093:9093"
-  #   volumes:
-  #     - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-  #     - alertmanager-data:/data
-
-
-#1860 - node
-
 volumes:
   prometheus-data:
   alertmanager-data:
 
 networks:
   universal:
+    name: monitoring
