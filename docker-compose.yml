@@ -6,6 +6,7 @@ services:
     restart: unless-stopped
     volumes:
      - ./grafana/data:/var/lib/grafana
+     - ./grafana/defaults.ini:/usr/share/grafana/conf/defaults.ini
     ports:
       - "3000:3000"
     networks:
@@ -27,15 +28,15 @@ services:
       - universal
 
 
-  alert-manager:
-    container_name: alert-manager
-    image: bitnami/alertmanager
-    restart: unless-stopped
-    ports:
-      - "9093:9093"
-    volumes:
-      - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-      - alertmanager-data:/data
+  # alert-manager:
+  #   container_name: alert-manager
+  #   image: bitnami/alertmanager
+  #   restart: unless-stopped
+  #   ports:
+  #     - "9093:9093"
+  #   volumes:
+  #     - ./prometheus/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+  #     - alertmanager-data:/data
 
 
 #1860 - node

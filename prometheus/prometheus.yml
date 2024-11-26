@@ -21,12 +21,12 @@ scrape_configs:
 
   - job_name: 'node-exporter'
     static_configs:
-      - targets: ["192.168.0.104:9100"]
+      - targets: ["192.168.4.196:9100"]
 
   - job_name: 'nginx-exporter'
     static_configs:
-      - targets: ['192.168.0.104:9102']
+      - targets: ['192.168.4.196:9102']
 
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['192.168.0.104:9101']
+      - targets: ['192.168.4.196:9101']
