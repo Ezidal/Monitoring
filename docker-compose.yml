@@ -62,4 +62,5 @@ volumes:
 
 networks:
   universal:
-    name: monitoring
+    external: true
+    name: monitor
